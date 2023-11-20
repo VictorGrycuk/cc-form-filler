@@ -2,6 +2,7 @@ package com.service.infrastructure
 
 import com.microsoft.playwright.Playwright
 import com.service.core.domain.creditcard.CreditCardBrand
+import com.service.infrastructure.cron.KjobService
 import com.service.infrastructure.logger.ConsoleLogger
 import com.service.infrastructure.page.AramexService
 import com.service.infrastructure.page.FakeCorreoArgentinoService
@@ -42,6 +43,15 @@ object Services {
         AramexService(
             Repositories.creditCardRepository,
             navigateToPage,
+        )
+    }
+
+    val cronService by lazy {
+        KjobService(
+            listOf(
+                { Actions.aramexAction.invoke() },
+                { Actions.fakeCorreoArgentinoAction.invoke() }
+            )
         )
     }
 }

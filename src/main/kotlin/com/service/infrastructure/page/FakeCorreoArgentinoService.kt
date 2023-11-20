@@ -16,9 +16,16 @@ class FakeCorreoArgentinoService(
         val card = creditCardRepository.getRandomCreditCard()
         logger.log(card.toString())
 
+        val result: Boolean = try {
+            navigateToPage.execute(card)
+        } catch (ex: Exception) {
+            logger.log(ex.message.toString())
+            false
+        }
+
         return ProcessResult(
             card,
-            navigateToPage.execute(card)
+            result,
         )
     }
 }

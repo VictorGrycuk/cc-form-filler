@@ -1,11 +1,7 @@
 package com.service.infrastructure.http
 
-import com.service.infrastructure.http.provider.KtorProvider
+import com.service.infrastructure.Services
 
-object Application {
-
-    @JvmStatic
-    fun main(args: Array<String>) {
-        KtorProvider.start()
-    }
+suspend fun main() {
+    Services.cronService.start()
 }
