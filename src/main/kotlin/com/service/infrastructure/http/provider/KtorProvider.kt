@@ -1,6 +1,5 @@
 package com.service.infrastructure.http.provider
 
-import cc.rbbl.ktor_health_check.Health
 import com.service.core.action.AramexAction
 import com.service.core.action.FakeCorreoArgentinoAction
 import com.service.infrastructure.Actions
@@ -20,7 +19,7 @@ object KtorProvider {
             install(ContentNegotiation) {
                 jackson()
             }
-            install(Health)
+
             routing {
                 fakeCorreoArgentino(Actions.fakeCorreoArgentinoAction)
                 aramex(Actions.aramexAction)
