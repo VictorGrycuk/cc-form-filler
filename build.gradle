@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     repositories {
         mavenCentral()
@@ -7,11 +9,16 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.8.0'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.0'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+tasks.withType(KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 apply plugin: 'kotlin'
@@ -47,6 +54,8 @@ dependencies {
     implementation "com.microsoft.playwright:playwright:1.39.0"
     implementation 'com.github.blocoio:faker:2.0.1'
     implementation "it.sauronsoftware.cron4j:cron4j:2.2.5"
+    implementation "com.sksamuel.hoplite:hoplite-core:2.7.5"
+    runtimeOnly "com.sksamuel.hoplite:hoplite-yaml:2.7.5"
     testImplementation "com.willowtreeapps.assertk:assertk-jvm:0.24"
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.7.0"
@@ -85,3 +94,16 @@ test {
 }
 
 processResources.dependsOn generateVersionProperties
+
+shadowJar {
+    mainClassName = 'com.service.infrastructure.http.Application'
+    classifier = 'fat'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'Application'
+        )
+    }
+}

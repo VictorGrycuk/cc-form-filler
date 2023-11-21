@@ -1,0 +1,3 @@
+cron:
+  pattern: "0 */3 * * *"
+  maxDelay: 180 # In minutes

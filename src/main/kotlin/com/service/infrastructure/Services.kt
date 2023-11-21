@@ -2,14 +2,24 @@ package com.service.infrastructure
 
 import com.microsoft.playwright.Playwright
 import com.service.core.domain.creditcard.CreditCardBrand
+import com.service.infrastructure.configuration.Configuration
 import com.service.infrastructure.cron.KjobService
 import com.service.infrastructure.logger.ConsoleLogger
 import com.service.infrastructure.page.AramexService
 import com.service.infrastructure.page.FakeCorreoArgentinoService
 import com.service.infrastructure.page.command.*
+import com.sksamuel.hoplite.ConfigLoaderBuilder
+import com.sksamuel.hoplite.addResourceSource
 
 object Services {
     private val page by lazy { Playwright.create().firefox().launch().newPage() }
+
+    val configuration by lazy {
+        ConfigLoaderBuilder.default()
+            .addResourceSource("/config.yml")
+            .build()
+            .loadConfigOrThrow<Configuration>()
+    }
 
     val logger by lazy { ConsoleLogger() }
 
@@ -48,6 +58,7 @@ object Services {
 
     val cronService by lazy {
         KjobService(
+            configuration.cron,
             listOf(
                 { Actions.aramexAction.invoke() },
                 { Actions.fakeCorreoArgentinoAction.invoke() }

@@ -2,20 +2,22 @@ package com.service.infrastructure.cron
 
 import com.service.core.domain.ProcessResult
 import com.service.core.domain.service.CronService
+import com.service.infrastructure.configuration.Cron
 import com.service.infrastructure.repository.creditcard.getRandomInt
 import it.sauronsoftware.cron4j.Scheduler;
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 class KjobService(
+    private val configuration: Cron,
     private val actions: List<() -> ProcessResult>
 ): CronService {
-    private val maxDelay = 180
+    private val maxDelay = configuration.maxDelay
     private val scheduler = Scheduler()
 
     override suspend fun start() {
         // At minute 0 past every 3rd hour.
-        scheduler.schedule("0 */3 * * *") {
+        scheduler.schedule(configuration.pattern) {
             runBlocking {
 
                 // Random delay between 1 and 180 minutes to add unpredictability
@@ -24,7 +26,7 @@ class KjobService(
                 println("Result: ${result.success}" )
             }
         }
-        // Starts the scheduler.
+
         scheduler.start()
     }
 

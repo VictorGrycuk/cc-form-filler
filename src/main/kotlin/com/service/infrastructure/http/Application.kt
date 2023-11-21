@@ -1,7 +1,15 @@
 package com.service.infrastructure.http
 
 import com.service.infrastructure.Services
+import kotlinx.coroutines.runBlocking
 
-suspend fun main() {
-    Services.cronService.start()
+class Application {
+    companion object {
+        @JvmStatic
+        fun main(args : Array<String>) {
+            runBlocking {
+                Services.cronService.start()
+            }
+        }
+    }
 }
