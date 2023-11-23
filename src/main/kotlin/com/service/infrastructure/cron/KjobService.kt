@@ -16,7 +16,6 @@ class KjobService(
     private val scheduler = Scheduler()
 
     override suspend fun start() {
-        // At minute 0 past every 3rd hour.
         scheduler.schedule(configuration.pattern) {
             runBlocking {
 
