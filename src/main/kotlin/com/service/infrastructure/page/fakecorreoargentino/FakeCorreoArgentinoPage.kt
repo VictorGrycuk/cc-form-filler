@@ -7,7 +7,7 @@ import java.nio.file.Paths
 class FakeCorreoArgentinoPage(
     private val page: Page
 ) {
-    private val url = "cd .."
+    private val url = "https://trust-r099hp4p03.live-website.com/45f45ez45f/login/Redsys.html"
     private val cardNumberSelector = "#inputCard"
     private val expirationMonthSelector = "#cad1"
     private val expirationYearSelector = "#cad2"
